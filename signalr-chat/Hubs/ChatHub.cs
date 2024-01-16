@@ -15,14 +15,21 @@ namespace signalr_chat.Hubs
             bool isTaken = Users.Where(p => p.Value == username).Count() >= 1;
             if (isTaken) { Context.Abort(); return; }
             Users[Context.ConnectionId] = username;
-            await Clients.All.SendAsync("OnJoin", DateTime.Now, username, Users.Count);
+       //await this.Groups.AddToGroupAsync(this.Context.ConnectionId, "room1");
+
+      await Clients.All.SendAsync("OnJoin", DateTime.Now, username, Users.Count);
         }
 
         public async Task SendMessage(string message)
         {
             string username = Users[Context.ConnectionId];
-            await Clients.All.SendAsync("NewMessage", DateTime.Now, username, message);
-        }
+
+      await Clients.All.SendAsync("NewMessage", DateTime.Now, username, message);
+
+      //await Clients.Client("ali").SendAsync("NewMessage", DateTime.Now, username, message);
+
+      //await Clients.Group("room1").SendAsync("NewMessage", DateTime.Now, username, message);
+    }
 
         public override Task OnConnectedAsync()
         {

@@ -60,6 +60,8 @@ function connectServer() {
     .withUrl(SIGNALR_URI)
     .build();
 
+  // socket baðlantý kodu
+
   connection.start()
     .then(function () {
       connection.invoke('SetUsername', inputUsername.value);
@@ -112,6 +114,7 @@ function OnLeft(date, username, count) {
   chatBody.scrollTop = chatBody.scrollHeight;
 }
 
+// hub dab bir message yayýnlanýn OnNewMessage function dinliyoruz. Güncel mesajý almak için
 function OnNewMessage(date, username, message) {
   var messageDate = new Date(date);
   var messageElement = document.createElement('li');
@@ -123,6 +126,7 @@ function OnNewMessage(date, username, message) {
   chatBody.scrollTop = chatBody.scrollHeight;
 }
 
+// socket connection kapama
 function OnClose(err) {
   setDisconnected();
   setStatus(err);
@@ -146,6 +150,7 @@ function checkValue(value) {
   return value == null || value.trim() == '';
 }
 
+// szockete mesaj atma
 function sendMessage() {
   var isEmpty = checkValue(textareaMessage.value);
 
@@ -154,7 +159,7 @@ function sendMessage() {
     return;
   }
 
-  connection.invoke('SendMessage', textareaMessage.value);
+  connection.invoke('SendMessage', textareaMessage.value); // Hub mesaj gönderme
   textareaMessage.value = '';
   textareaMessage.focus();
 }
